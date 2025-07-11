@@ -1,0 +1,72 @@
+{
+  "name": "common-tools",
+  "displayName": "Common Tools",
+  "description": "Common Tools for VS Code",
+  "keywords": [
+    "vscode",
+    "tools",
+    "json",
+    "time"
+  ],
+  "version": "0.0.1",
+  "publisher": "YonglinWang",
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "common-tools.json.format",
+        "title": "JSON: 格式化"
+      },
+      {
+        "command": "common-tools.json.minify",
+        "title": "JSON: 压缩"
+      },
+      {
+        "command": "common-tools.json.unescape",
+        "title": "JSON: 去转义"
+      },
+      {
+        "command": "common-tools.json.unescapeFormat",
+        "title": "JSON: 去转义后格式化"
+      },
+      {
+        "command": "common-tools.json.deepUnescape",
+        "title": "JSON: 深度去转义"
+      },
+      {
+        "command": "common-tools.json.deepUnescapeFormat",
+        "title": "JSON: 深度去转义后格式化"
+      },
+      {
+        "command": "common-tools.time.formatTimestamp",
+        "title": "Time: 时间戳转格式化时间"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.101.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
