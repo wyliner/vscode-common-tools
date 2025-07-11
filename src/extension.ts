@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import { registerJsonToolsCommands } from './commands/json';
 import { registerTimeToolsCommands } from './commands/time';
+import { registerStringToolsCommands } from './commands/string';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -11,6 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
 	registerJsonToolsCommands(context);
 	// 注册时间工具相关命令
 	registerTimeToolsCommands(context);
+	// 注册字符串工具相关命令
+	registerStringToolsCommands(context);
 }
 
 // This method is called when your extension is deactivated

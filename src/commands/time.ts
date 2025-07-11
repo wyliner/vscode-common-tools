@@ -1,3 +1,9 @@
+/**
+ * 获取当前时间戳（毫秒）
+ */
+export function getNowTimestamp(): string {
+    return Date.now().toString();
+}
 
 import * as vscode from 'vscode';
 
@@ -30,9 +36,33 @@ export function formatTimestamp(timestamp: number | string): string {
 }
 
 export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
+    // 获取当前时间戳
+    context.subscriptions.push(
+        vscode.commands.registerCommand('common-tools.time.now-timestamp', async () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                vscode.env.clipboard.writeText(getNowTimestamp());
+                vscode.window.showInformationMessage('当前时间戳已复制到剪贴板');
+                return;
+            }
+            const ts = getNowTimestamp();
+            await editor.edit(editBuilder => {
+                if (editor.selection.isEmpty) {
+                    const fullRange = new vscode.Range(
+                        editor.document.positionAt(0),
+                        editor.document.positionAt(editor.document.getText().length)
+                    );
+                    editBuilder.replace(fullRange, ts);
+                } else {
+                    editBuilder.replace(editor.selection, ts);
+                }
+            });
+            vscode.window.showInformationMessage('当前时间戳已插入');
+        })
+    );
     // 选中文本或全部文本，转换为格式化时间
     context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.time.formatTimestamp', async () => {
+        vscode.commands.registerCommand('common-tools.time.format-timestamp', async () => {
             const editor = vscode.window.activeTextEditor;
             if (!editor) {
                 return;

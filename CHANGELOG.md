@@ -1,9 +1,12 @@
 # Change Log
 
-All notable changes to the "common-tools" extension will be documented in this file.
+## 0.0.2 - 2025-07-11
+- 新增 string 工具，支持多种字符串格式转换
+- 添加右键菜单功能，支持分组三级菜单
+- 命令风格统一为 kebab-case
+- 优化 JSON 工具注册方式
+- 新增获取当前时间戳命令
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+## 0.0.1 - 2025-07-10
+- 新增 json 工具
+- 新增 time 工具

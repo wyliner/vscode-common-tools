@@ -25,164 +25,81 @@ function deepUnescape(obj: any): any {
 }
 import * as vscode from 'vscode';
 
+type JsonCase = {
+    command: string;
+    title: string;
+    handler: (text: string) => string;
+};
+
+const jsonCases: JsonCase[] = [
+    {
+        command: 'common-tools.json.format',
+        title: 'JSON 格式化成功',
+        handler: (text: string) => JSON.stringify(JSON.parse(text), null, 2)
+    },
+    {
+        command: 'common-tools.json.minify',
+        title: 'JSON 压缩成功',
+        handler: (text: string) => JSON.stringify(JSON.parse(text))
+    },
+    {
+        command: 'common-tools.json.unescape',
+        title: '去除转义字符成功',
+        handler: (text: string) => JSON.parse('"' + text.replace(/"/g, '\\"') + '"')
+    },
+    {
+        command: 'common-tools.json.unescape-format',
+        title: '转义后格式化成功',
+        handler: (text: string) => {
+            const unescaped = JSON.parse('"' + text.replace(/"/g, '\\"') + '"');
+            return JSON.stringify(unescaped, null, 2);
+        }
+    },
+    {
+        command: 'common-tools.json.deep-unescape',
+        title: '所有字段转义内容已去除',
+        handler: (text: string) => {
+            const obj = JSON.parse(text);
+            const unescaped = deepUnescape(obj);
+            return JSON.stringify(unescaped, null, 2);
+        }
+    },
+    {
+        command: 'common-tools.json.deep-unescape-format',
+        title: '深度去除转义后格式化成功',
+        handler: (text: string) => {
+            const obj = JSON.parse(text);
+            const unescaped = deepUnescape(obj);
+            return JSON.stringify(unescaped, null, 2);
+        }
+    }
+];
+
 export function registerJsonToolsCommands(context: vscode.ExtensionContext) {
-    // 格式化 JSON
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.format', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                const formatted = JSON.stringify(JSON.parse(text), null, 2);
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, formatted);
-                    } else {
-                        editBuilder.replace(editor.selection, formatted);
-                    }
-                });
-                vscode.window.showInformationMessage('JSON 格式化成功');
-            } catch (e) {
-                vscode.window.showErrorMessage('JSON 格式化失败: ' + e);
-            }
-        })
-    );
-
-    // 压缩 JSON
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.minify', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                const minified = JSON.stringify(JSON.parse(text));
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, minified);
-                    } else {
-                        editBuilder.replace(editor.selection, minified);
-                    }
-                });
-                vscode.window.showInformationMessage('JSON 压缩成功');
-            } catch (e) {
-                vscode.window.showErrorMessage('JSON 压缩失败: ' + e);
-            }
-        })
-    );
-    // 去除转义字符
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.unescape', async () => {
-
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                // 先解析为字符串再去除转义
-                const unescaped = JSON.parse('"' + text.replace(/"/g, '\\"') + '"');
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, unescaped);
-                    } else {
-                        editBuilder.replace(editor.selection, unescaped);
-                    }
-                });
-                vscode.window.showInformationMessage('去除转义字符成功');
-            } catch (e) {
-                vscode.window.showErrorMessage('去除转义字符失败: ' + e);
-            }
-        })
-    );
-    // 转义字符串后格式化
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.unescapeFormat', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                // 先去除转义再格式化
-                const unescaped = JSON.parse('"' + text.replace(/"/g, '\\"') + '"');
-                const formatted = JSON.stringify(unescaped, null, 2);
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, formatted);
-                    } else {
-                        editBuilder.replace(editor.selection, formatted);
-                    }
-                });
-                vscode.window.showInformationMessage('转义后格式化成功');
-            } catch (e) {
-                vscode.window.showErrorMessage('转义后格式化失败: ' + e);
-            }
-        })
-    );
-    // 深度去除所转义字符
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.deepUnescape', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                const obj = JSON.parse(text);
-                const unescaped = deepUnescape(obj);
-                const formatted = JSON.stringify(unescaped, null, 2);
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, formatted);
-                    } else {
-                        editBuilder.replace(editor.selection, formatted);
-                    }
-                });
-                vscode.window.showInformationMessage('所有字段转义内容已去除');
-            } catch (e) {
-                vscode.window.showErrorMessage('深度去除转义失败: ' + e);
-            }
-        })
-    );
-    // 深度去除转义字符串后格式化
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.json.deepUnescapeFormat', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) { return; }
-            const text = editor.document.getText(editor.selection) || editor.document.getText();
-            try {
-                const obj = JSON.parse(text);
-                const unescaped = deepUnescape(obj);
-                const formatted = JSON.stringify(unescaped, null, 2);
-                await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, formatted);
-                    } else {
-                        editBuilder.replace(editor.selection, formatted);
-                    }
-                });
-                vscode.window.showInformationMessage('深度去除转义后格式化成功');
-            } catch (e) {
-                vscode.window.showErrorMessage('深度去除转义后格式化失败: ' + e);
-            }
-        })
-    );
+    for (const c of jsonCases) {
+        context.subscriptions.push(
+            vscode.commands.registerCommand(c.command, async () => {
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) { return; }
+                const text = editor.document.getText(editor.selection) || editor.document.getText();
+                try {
+                    const result = c.handler(text.trim());
+                    await editor.edit(editBuilder => {
+                        if (editor.selection.isEmpty) {
+                            const fullRange = new vscode.Range(
+                                editor.document.positionAt(0),
+                                editor.document.positionAt(editor.document.getText().length)
+                            );
+                            editBuilder.replace(fullRange, result);
+                        } else {
+                            editBuilder.replace(editor.selection, result);
+                        }
+                    });
+                    vscode.window.showInformationMessage(c.title);
+                } catch (e) {
+                    vscode.window.showErrorMessage(c.title.replace('成功', '失败') + ': ' + e);
+                }
+            })
+        );
+    }
 }

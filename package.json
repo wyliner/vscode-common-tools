@@ -5,13 +5,18 @@
   "keywords": [
     "vscode",
     "tools",
+    "string",
     "json",
     "time"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "YonglinWang",
   "engines": {
     "vscode": "^1.101.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YonglinWang/vscode-common-tools"
   },
   "categories": [
     "Other"
@@ -20,35 +25,91 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      { "command": "common-tools.json.format", "title": "JSON: 格式化" },
+      { "command": "common-tools.json.minify", "title": "JSON: 压缩" },
+      { "command": "common-tools.json.unescape", "title": "JSON: 去转义" },
+      { "command": "common-tools.json.unescape-format", "title": "JSON: 去转义后格式化" },
+      { "command": "common-tools.json.deep-unescape", "title": "JSON: 深度去转义" },
+      { "command": "common-tools.json.deep-unescape-format", "title": "JSON: 深度去转义后格式化" },
+      { "command": "common-tools.time.format-timestamp", "title": "Time: 时间戳转格式化时间" },
+      { "command": "common-tools.time.now-timestamp", "title": "Time: 获取当前时间戳" },
+      { "command": "common-tools.string.lower-case", "title": "String: lower case" },
+      { "command": "common-tools.string.upper-case", "title": "String: UPPER CASE" },
+      { "command": "common-tools.string.camel-case", "title": "String: camelCase" },
+      { "command": "common-tools.string.snake-case", "title": "String: snake_case" },
+      { "command": "common-tools.string.screaming-snake-case", "title": "String: SCREAMING_SNAKE_CASE" },
+      { "command": "common-tools.string.kebab-case", "title": "String: kebab-case" },
+      { "command": "common-tools.string.pascal-case", "title": "String: PascalCase" },
+      { "command": "common-tools.string.capitalized-snake-case", "title": "String: Capitalized_Snake_Case" },
+      { "command": "common-tools.string.space-separated", "title": "String: space separated" },
+      { "command": "common-tools.string.dot-case", "title": "String: dot.case" }
+    ],
+    "submenus": [
       {
-        "command": "common-tools.json.format",
-        "title": "JSON: 格式化"
+        "id": "common-tools.menu",
+        "label": "Common Tools"
       },
       {
-        "command": "common-tools.json.minify",
-        "title": "JSON: 压缩"
+        "id": "common-tools.menu.json",
+        "label": "JSON"
       },
       {
-        "command": "common-tools.json.unescape",
-        "title": "JSON: 去转义"
+        "id": "common-tools.menu.time",
+        "label": "Time"
       },
       {
-        "command": "common-tools.json.unescapeFormat",
-        "title": "JSON: 去转义后格式化"
-      },
-      {
-        "command": "common-tools.json.deepUnescape",
-        "title": "JSON: 深度去转义"
-      },
-      {
-        "command": "common-tools.json.deepUnescapeFormat",
-        "title": "JSON: 深度去转义后格式化"
-      },
-      {
-        "command": "common-tools.time.formatTimestamp",
-        "title": "Time: 时间戳转格式化时间"
+        "id": "common-tools.menu.string",
+        "label": "String"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "common-tools.menu",
+          "group": "navigation@100"
+        }
+      ],
+      "common-tools.menu": [
+        {
+          "submenu": "common-tools.menu.json",
+          "when": "editorLangId == json || editorLangId == jsonc",
+          "group": "1_json"
+        },
+        {
+          "submenu": "common-tools.menu.time",
+          "when": "editorLangId == json || editorLangId == jsonc || editorLangId == plaintext",
+          "group": "2_time"
+        },
+        {
+          "submenu": "common-tools.menu.string",
+          "group": "3_string"
+        }
+      ],
+      "common-tools.menu.string": [
+        { "command": "common-tools.string.lower-case", "group": "1" },
+        { "command": "common-tools.string.upper-case", "group": "2" },
+        { "command": "common-tools.string.camel-case", "group": "3" },
+        { "command": "common-tools.string.snake-case", "group": "4" },
+        { "command": "common-tools.string.screaming-snake-case", "group": "5" },
+        { "command": "common-tools.string.kebab-case", "group": "6" },
+        { "command": "common-tools.string.pascal-case", "group": "7" },
+        { "command": "common-tools.string.capitalized-snake-case", "group": "8" },
+        { "command": "common-tools.string.space-separated", "group": "9" },
+        { "command": "common-tools.string.dot-case", "group": "10" }
+      ],
+      "common-tools.menu.json": [
+        { "command": "common-tools.json.format", "group": "1" },
+        { "command": "common-tools.json.minify", "group": "2" },
+        { "command": "common-tools.json.unescape", "group": "3" },
+        { "command": "common-tools.json.unescape-format", "group": "4" },
+        { "command": "common-tools.json.deep-unescape", "group": "5" },
+        { "command": "common-tools.json.deep-unescape-format", "group": "6" }
+      ],
+      "common-tools.menu.time": [
+        { "command": "common-tools.time.format-timestamp", "group": "1" },
+        { "command": "common-tools.time.now-timestamp", "group": "2" }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
