@@ -10,7 +10,7 @@
     "time"
   ],
   "icon": "icon/icon.png",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "YonglinWang",
   "engines": {
     "vscode": "^1.101.0"
