@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YonglinWang/vscode-common-tools"
+    "url": "https://github.com/wyliner/vscode-common-tools"
   },
   "categories": [
     "Other"
@@ -25,14 +25,18 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      { "command": "common-tools.time.format.local-datetime-ms", "title": "Time: LocalDateTime (YYYY-MM-DD HH:mm:ss.SSS)" },
+      { "command": "common-tools.time.now-timestamp", "title": "Time: 获取当前时间戳" },
+      { "command": "common-tools.time.format.local-date", "title": "Time: LocalDate (YYYY-MM-DD)" },
+      { "command": "common-tools.time.format.local-datetime", "title": "Time: LocalDateTime (YYYY-MM-DD HH:mm:ss)" },
+      { "command": "common-tools.time.parse-to-timestamp", "title": "Time: Parse to timestamp" },
       { "command": "common-tools.json.format", "title": "JSON: 格式化" },
       { "command": "common-tools.json.minify", "title": "JSON: 压缩" },
+      { "command": "common-tools.json.compress-one-line", "title": "JSON: 格式化压缩" },
       { "command": "common-tools.json.unescape", "title": "JSON: 去转义" },
       { "command": "common-tools.json.unescape-format", "title": "JSON: 去转义后格式化" },
       { "command": "common-tools.json.deep-unescape", "title": "JSON: 深度去转义" },
       { "command": "common-tools.json.deep-unescape-format", "title": "JSON: 深度去转义后格式化" },
-      { "command": "common-tools.time.format-timestamp", "title": "Time: 时间戳转格式化时间" },
-      { "command": "common-tools.time.now-timestamp", "title": "Time: 获取当前时间戳" },
       { "command": "common-tools.string.lower-case", "title": "String: lower case" },
       { "command": "common-tools.string.upper-case", "title": "String: UPPER CASE" },
       { "command": "common-tools.string.camel-case", "title": "String: camelCase" },
@@ -45,69 +49,47 @@
       { "command": "common-tools.string.dot-case", "title": "String: dot.case" }
     ],
     "submenus": [
-      {
-        "id": "common-tools.menu",
-        "label": "Common Tools"
-      },
-      {
-        "id": "common-tools.menu.json",
-        "label": "JSON"
-      },
-      {
-        "id": "common-tools.menu.time",
-        "label": "Time"
-      },
-      {
-        "id": "common-tools.menu.string",
-        "label": "String"
-      }
+      { "id": "common-tools.menu", "label": "Common Tools" },
+      { "id": "common-tools.menu.json", "label": "JSON" },
+      { "id": "common-tools.menu.string", "label": "String" },
+      { "id": "common-tools.menu.time", "label": "Time" }
     ],
     "menus": {
       "editor/context": [
-        {
-          "submenu": "common-tools.menu",
-          "group": "navigation@100"
-        }
+        { "submenu": "common-tools.menu", "group": "navigation@100" }
       ],
       "common-tools.menu": [
-        {
-          "submenu": "common-tools.menu.json",
-          "when": "editorLangId == json || editorLangId == jsonc",
-          "group": "1_json"
-        },
-        {
-          "submenu": "common-tools.menu.time",
-          "when": "editorLangId == json || editorLangId == jsonc || editorLangId == plaintext",
-          "group": "2_time"
-        },
-        {
-          "submenu": "common-tools.menu.string",
-          "group": "3_string"
-        }
+        { "submenu": "common-tools.menu.json", "group": "1" },
+        { "submenu": "common-tools.menu.string", "group": "2" },
+        { "submenu": "common-tools.menu.time", "group": "3" }
       ],
       "common-tools.menu.string": [
-        { "command": "common-tools.string.lower-case", "group": "1" },
-        { "command": "common-tools.string.upper-case", "group": "2" },
-        { "command": "common-tools.string.camel-case", "group": "3" },
-        { "command": "common-tools.string.snake-case", "group": "4" },
-        { "command": "common-tools.string.screaming-snake-case", "group": "5" },
-        { "command": "common-tools.string.kebab-case", "group": "6" },
-        { "command": "common-tools.string.pascal-case", "group": "7" },
-        { "command": "common-tools.string.capitalized-snake-case", "group": "8" },
-        { "command": "common-tools.string.space-separated", "group": "9" },
-        { "command": "common-tools.string.dot-case", "group": "10" }
+        { "command": "common-tools.string.lower-case", "group": "1_basic" },
+        { "command": "common-tools.string.upper-case", "group": "1_basic" },
+        { "command": "common-tools.string.camel-case", "group": "2_case" },
+        { "command": "common-tools.string.pascal-case", "group": "2_case" },
+        { "command": "common-tools.string.snake-case", "group": "2_case" },
+        { "command": "common-tools.string.screaming-snake-case", "group": "2_case" },
+        { "command": "common-tools.string.kebab-case", "group": "2_case" },
+        { "command": "common-tools.string.dot-case", "group": "2_case" },
+        { "command": "common-tools.string.capitalized-snake-case", "group": "3_special" },
+        { "command": "common-tools.string.space-separated", "group": "3_special" }
       ],
       "common-tools.menu.json": [
         { "command": "common-tools.json.format", "group": "1" },
         { "command": "common-tools.json.minify", "group": "2" },
+        { "command": "common-tools.json.compress-one-line", "group": "2" },
         { "command": "common-tools.json.unescape", "group": "3" },
+        { "command": "common-tools.json.deep-unescape", "group": "3" },
         { "command": "common-tools.json.unescape-format", "group": "4" },
-        { "command": "common-tools.json.deep-unescape", "group": "5" },
-        { "command": "common-tools.json.deep-unescape-format", "group": "6" }
+        { "command": "common-tools.json.deep-unescape-format", "group": "4" }
       ],
       "common-tools.menu.time": [
-        { "command": "common-tools.time.format-timestamp", "group": "1" },
-        { "command": "common-tools.time.now-timestamp", "group": "2" }
+        { "command": "common-tools.time.parse-to-timestamp", "group": "1" },
+        { "command": "common-tools.time.format.local-datetime", "group": "2" },
+        { "command": "common-tools.time.format.local-datetime-ms", "group": "2" },
+        { "command": "common-tools.time.format.local-date", "group": "2" },
+        { "command": "common-tools.time.now-timestamp", "group": "3" }
       ]
     }
   },

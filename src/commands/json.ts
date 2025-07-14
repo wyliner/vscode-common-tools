@@ -31,46 +31,67 @@ type JsonCase = {
     handler: (text: string) => string;
 };
 
+const preprocess = (text: string) => text.trim().replace(/^[,\s]+|[,\s]+$/g, '');
+
 const jsonCases: JsonCase[] = [
     {
         command: 'common-tools.json.format',
         title: 'JSON 格式化成功',
-        handler: (text: string) => JSON.stringify(JSON.parse(text), null, 2)
+        handler: (text: string) => JSON.stringify(JSON.parse(preprocess(text)), null, 4)
     },
     {
         command: 'common-tools.json.minify',
         title: 'JSON 压缩成功',
-        handler: (text: string) => JSON.stringify(JSON.parse(text))
+        handler: (text: string) => JSON.stringify(JSON.parse(preprocess(text)))
+    },
+    {
+        command: 'common-tools.json.compress-one-line',
+        title: 'JSON 格式化压缩',
+        handler: (text: string) => {
+            const obj = JSON.parse(preprocess(text));
+            // 先标准一行
+            let str = JSON.stringify(obj);
+            // 大括号和中括号内侧加空格
+            str = str.replace(/^{/, '{ ').replace(/}$/, ' }');
+            str = str.replace(/^\[/, '[ ').replace(/\]$/, ' ]');
+            // 逗号后加空格
+            str = str.replace(/,/g, ', ');
+            // 冒号后加空格
+            str = str.replace(/:/g, ': ');
+            // 多余空格合并
+            str = str.replace(/\s{2,}/g, ' ');
+            return str.trim();
+        }
     },
     {
         command: 'common-tools.json.unescape',
         title: '去除转义字符成功',
-        handler: (text: string) => JSON.parse('"' + text.replace(/"/g, '\\"') + '"')
+        handler: (text: string) => JSON.parse('"' + preprocess(text).replace(/"/g, '\"') + '"')
     },
     {
         command: 'common-tools.json.unescape-format',
         title: '转义后格式化成功',
         handler: (text: string) => {
-            const unescaped = JSON.parse('"' + text.replace(/"/g, '\\"') + '"');
-            return JSON.stringify(unescaped, null, 2);
+            const unescaped = JSON.parse('"' + preprocess(text).replace(/"/g, '\"') + '"');
+            return JSON.stringify(unescaped, null, 4);
         }
     },
     {
         command: 'common-tools.json.deep-unescape',
         title: '所有字段转义内容已去除',
         handler: (text: string) => {
-            const obj = JSON.parse(text);
+            const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
-            return JSON.stringify(unescaped, null, 2);
+            return JSON.stringify(unescaped, null, 4);
         }
     },
     {
         command: 'common-tools.json.deep-unescape-format',
         title: '深度去除转义后格式化成功',
         handler: (text: string) => {
-            const obj = JSON.parse(text);
+            const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
-            return JSON.stringify(unescaped, null, 2);
+            return JSON.stringify(unescaped, null, 4);
         }
     }
 ];

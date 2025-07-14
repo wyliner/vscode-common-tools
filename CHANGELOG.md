@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.3 - 2025-07-14
+- 优化 time 工具，parse 支持所有格式字符串，format 支持时间戳输入，10/13位自动识别毫秒
+- string 菜单命令分组显示
+- JSON compress-one-line 格式优化，结构更美观
+- JSON/STRING 工具健壮性增强，所有 handler 预处理 trim/逗号/空格
+
 ## 0.0.2 - 2025-07-11
 - 新增 string 工具，支持多种字符串格式转换
 - 添加右键菜单功能，支持分组三级菜单
