@@ -1,6 +1,9 @@
 # Change Log
 
 ## 0.0.3 - 2025-07-14
+ - 新增icon
+
+## 0.0.3 - 2025-07-14
 - 优化 time 工具，parse 支持所有格式字符串，format 支持时间戳输入，10/13位自动识别毫秒
 - string 菜单命令分组显示
 - JSON compress-one-line 格式优化，结构更美观

@@ -9,7 +9,8 @@
     "json",
     "time"
   ],
-  "version": "0.0.3",
+  "icon": "icon/icon.png",
+  "version": "0.0.4",
   "publisher": "YonglinWang",
   "engines": {
     "vscode": "^1.101.0"
