@@ -103,12 +103,12 @@ export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
     const commands = [
         {
             command: 'common-tools.time.now-timestamp',
-            title: '已插入当前时间戳',
+            title: 'Current timestamp inserted',
             handler: () => Date.now().toString()
         },
         {
             command: 'common-tools.time.format.local-date',
-            title: '已插入当前本地日期 (YYYY-MM-DD)',
+            title: 'Local date inserted (YYYY-MM-DD)',
             handler: (text?: string) => {
                 if (text === undefined || text === null || text.trim() === '') {
                     return '';
@@ -118,7 +118,7 @@ export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
         },
         {
             command: 'common-tools.time.format.local-datetime',
-            title: '已插入当前本地日期时间 (YYYY-MM-DD HH:mm:ss)',
+            title: 'Local date time inserted (YYYY-MM-DD HH:mm:ss)',
             handler: (text?: string) => {
                 if (text === undefined || text === null || text.trim() === '') {
                     return '';
@@ -128,7 +128,7 @@ export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
         },
         {
             command: 'common-tools.time.format.local-datetime-ms',
-            title: '已插入当前本地日期时间 (YYYY-MM-DD HH:mm:ss.SSS)',
+            title: 'Local date time with milliseconds inserted (YYYY-MM-DD HH:mm:ss.SSS)',
             handler: (text?: string) => {
                 if (text === undefined || text === null || text.trim() === '') {
                     return '';
@@ -138,7 +138,7 @@ export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
         },
         {
             command: 'common-tools.time.parse-to-timestamp',
-            title: '已解析为时间戳',
+            title: 'Parsed to timestamp',
             handler: (text?: string) => parseToTimestamp(text || '')
         }
     ];
@@ -155,12 +155,12 @@ export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
                 try {
                     result = c.handler(text.trim());
                 } catch (e) {
-                    vscode.window.showErrorMessage(c.title.replace('已插入', '失败') + ': ' + e);
+                    vscode.window.showErrorMessage('Error: ' + e);
                     return;
                 }
                 if (!editor) {
                     vscode.env.clipboard.writeText(result);
-                    vscode.window.showInformationMessage('已复制：' + result);
+                    vscode.window.showInformationMessage('Copied to clipboard: ' + result);
                     return;
                 }
                 await editor.edit(editBuilder => {

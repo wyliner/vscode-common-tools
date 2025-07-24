@@ -36,17 +36,17 @@ const preprocess = (text: string) => text.trim().replace(/^[,\s]+|[,\s]+$/g, '')
 const jsonCases: JsonCase[] = [
     {
         command: 'common-tools.json.format',
-        title: 'JSON 格式化成功',
+        title: 'JSON formatted successfully',
         handler: (text: string) => JSON.stringify(JSON.parse(preprocess(text)), null, 4)
     },
     {
         command: 'common-tools.json.minify',
-        title: 'JSON 压缩成功',
+        title: 'JSON minified successfully',
         handler: (text: string) => JSON.stringify(JSON.parse(preprocess(text)))
     },
     {
         command: 'common-tools.json.compress-one-line',
-        title: 'JSON 格式化压缩',
+        title: 'JSON formatted and compressed',
         handler: (text: string) => {
             const obj = JSON.parse(preprocess(text));
             // 先标准一行
@@ -65,12 +65,12 @@ const jsonCases: JsonCase[] = [
     },
     {
         command: 'common-tools.json.unescape',
-        title: '去除转义字符成功',
+        title: 'Escape characters removed',
         handler: (text: string) => JSON.parse('"' + preprocess(text).replace(/"/g, '\"') + '"')
     },
     {
         command: 'common-tools.json.unescape-format',
-        title: '转义后格式化成功',
+        title: 'Unescaped and formatted successfully',
         handler: (text: string) => {
             const unescaped = JSON.parse('"' + preprocess(text).replace(/"/g, '\"') + '"');
             return JSON.stringify(unescaped, null, 4);
@@ -78,7 +78,7 @@ const jsonCases: JsonCase[] = [
     },
     {
         command: 'common-tools.json.deep-unescape',
-        title: '所有字段转义内容已去除',
+        title: 'All field escape content removed',
         handler: (text: string) => {
             const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
@@ -87,7 +87,7 @@ const jsonCases: JsonCase[] = [
     },
     {
         command: 'common-tools.json.deep-unescape-format',
-        title: '深度去除转义后格式化成功',
+        title: 'Deep unescaped and formatted successfully',
         handler: (text: string) => {
             const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
@@ -118,7 +118,7 @@ export function registerJsonToolsCommands(context: vscode.ExtensionContext) {
                     });
                     vscode.window.showInformationMessage(c.title);
                 } catch (e) {
-                    vscode.window.showErrorMessage(c.title.replace('成功', '失败') + ': ' + e);
+                    vscode.window.showErrorMessage('Error: ' + e);
                 }
             })
         );

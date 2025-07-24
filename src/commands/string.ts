@@ -90,7 +90,7 @@ export function registerStringToolsCommands(context: vscode.ExtensionContext) {
                         editBuilder.replace(editor.selection, result);
                     }
                 });
-                vscode.window.showInformationMessage('转换成功');
+                vscode.window.showInformationMessage('Conversion successful');
             })
         );
     }

@@ -1,32 +1,43 @@
 # Common Tools (common-tools)
 
-VS Code 扩展，提供常用开发工具命令，支持右键分组菜单和命令面板操作。
+A VS Code extension## Menu and Usage
+1. Select the content you want to process, or don't select anything to process the entire file.
+2. Right-click and select the "Common Tools" menu, then choose the corresponding feature by group.
+3. Or press `Cmd+Shift+P` (Mac)/`Ctrl+Shift+P` (Windows) to open the command palette, type the command name (such as "lower case" or "timestamp"), and press Enter.
 
-## 功能列表
+## Changelog
+See [CHANGELOG.md](./CHANGELOG.md) for details.
 
-### JSON 工具
-- **格式化** (`common-tools.json.format`)
-- **压缩** (`common-tools.json.minify`)
-- **格式化压缩（美观一行）** (`common-tools.json.compress-one-line`)
-- **去转义** (`common-tools.json.unescape`)
-- **去转义后格式化** (`common-tools.json.unescape-format`)
-- **深度去转义** (`common-tools.json.deep-unescape`)
-- **深度去转义后格式化** (`common-tools.json.deep-unescape-format`)
+## Contribution
+Issues and PRs are welcome.ides common development tool commands, supporting right-click group menus and command palette operations.
 
-> 所有 JSON 工具自动 trim 选中内容并去除首尾逗号、空格，健壮处理。
+[中文文档](./README.cn.md)
 
-### 时间工具
-- **获取当前时间戳** (`common-tools.time.now-timestamp`)
-- **格式化本地日期** (`common-tools.time.format.local-date`)
-- **格式化本地日期时间** (`common-tools.time.format.local-datetime`)
-- **格式化本地日期时间（带毫秒）** (`common-tools.time.format.local-datetime-ms`)
-- **字符串转时间戳** (`common-tools.time.parse-to-timestamp`)
-  - 支持格式：YYYY-MM-DD、YYYY-MM-DD HH:mm、YYYY-MM-DD HH:mm:ss、YYYY-MM-DD HH:mm:ss.SSS、HH:mm、HH:mm:ss
-- **格式化命令支持输入 10/13 位时间戳，10位自动去毫秒，13位保留毫秒。选中为空返回空字符串。**
+## Features
 
-### 字符串格式转换工具
-- **小写** (`common-tools.string.lower-case`)
-- **大写** (`common-tools.string.upper-case`)
+### JSON Tools
+- **Format** (`common-tools.json.format`)
+- **Minify** (`common-tools.json.minify`)
+- **Format and Compress** (`common-tools.json.compress-one-line`)
+- **Unescape** (`common-tools.json.unescape`)
+- **Unescape and Format** (`common-tools.json.unescape-format`)
+- **Deep Unescape** (`common-tools.json.deep-unescape`)
+- **Deep Unescape and Format** (`common-tools.json.deep-unescape-format`)
+
+> All JSON tools automatically trim the selected content and remove leading/trailing commas and spaces for robust processing.
+
+### Time Tools
+- **Get Current Timestamp** (`common-tools.time.now-timestamp`)
+- **Format Local Date** (`common-tools.time.format.local-date`)
+- **Format Local DateTime** (`common-tools.time.format.local-datetime`)
+- **Format Local DateTime with Milliseconds** (`common-tools.time.format.local-datetime-ms`)
+- **Parse String to Timestamp** (`common-tools.time.parse-to-timestamp`)
+  - Supported formats: YYYY-MM-DD, YYYY-MM-DD HH:mm, YYYY-MM-DD HH:mm:ss, YYYY-MM-DD HH:mm:ss.SSS, HH:mm, HH:mm:ss
+- **Format commands support 10/13 digit timestamps input. 10-digit timestamps are automatically converted without milliseconds, 13-digit timestamps preserve milliseconds. Returns an empty string when selection is empty.**
+
+### String Format Conversion Tools
+- **lower case** (`common-tools.string.lower-case`)
+- **UPPER CASE** (`common-tools.string.upper-case`)
 - **camelCase** (`common-tools.string.camel-case`)
 - **PascalCase** (`common-tools.string.pascal-case`)
 - **snake_case** (`common-tools.string.snake-case`)
@@ -34,9 +45,17 @@ VS Code 扩展，提供常用开发工具命令，支持右键分组菜单和命
 - **kebab-case** (`common-tools.string.kebab-case`)
 - **dot.case** (`common-tools.string.dot-case`)
 - **Capitalized_Snake_Case** (`common-tools.string.capitalized-snake-case`)
-- **空格分隔** (`common-tools.string.space-separated`)
+- **space separated** (`common-tools.string.space-separated`)
 
-> 字符串工具菜单已分组，常用、大小写、特殊格式一目了然。
+> String tool menu items are grouped for clarity, with common, case conversion, and special formats clearly organized.
+
+### UUID Tools
+- **Generate UUID v4** (`common-tools.uuid.generate`)
+  - Generates a random UUID and inserts it at the current cursor position or replaces the selected content
+  - Automatically copies to clipboard when no editor is open
+- **Generate UUID v4 without Hyphens** (`common-tools.uuid.generate-without-hyphens`)
+  - Generates a random UUID without hyphens and inserts it at the current cursor position or replaces the selected content
+  - Automatically copies to clipboard when no editor is open
 
 ## 菜单与用法
 1. 选中需要处理的内容，或不选中则处理全文。
