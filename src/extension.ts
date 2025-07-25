@@ -5,6 +5,7 @@ import { registerJsonToolsCommands } from './commands/json';
 import { registerTimeToolsCommands } from './commands/time';
 import { registerStringToolsCommands } from './commands/string';
 import { registerUuidCommands } from './commands/uuid';
+import { registerRandomToolsCommands } from './commands/random';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -17,6 +18,8 @@ export function activate(context: vscode.ExtensionContext) {
 	registerStringToolsCommands(context);
 	// 注册 UUID 相关命令
 	registerUuidCommands(context);
+	// 注册随机数工具相关命令
+	registerRandomToolsCommands(context);
 }
 
 // This method is called when your extension is deactivated

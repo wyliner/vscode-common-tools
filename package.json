@@ -11,7 +11,7 @@
     "uuid"
   ],
   "icon": "icon/icon.png",
-  "version": "0.0.7",
+  "version": "0.0.6",
   "publisher": "YonglinWang",
   "engines": {
     "vscode": "^1.101.0"
@@ -27,12 +27,13 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      { "command": "common-tools.random.generate", "title": "Random: Generate Random String" },
       { "command": "common-tools.uuid.generate", "title": "UUID: Generate UUID v4" },
       { "command": "common-tools.uuid.generate-without-hyphens", "title": "UUID: Generate UUID v4 without Hyphens" },
-      { "command": "common-tools.time.format.local-datetime-ms", "title": "Time: LocalDateTime (YYYY-MM-DD HH:mm:ss.SSS)" },
+      { "command": "common-tools.time.format.local-datetime-ms", "title": "Time: YYYY-MM-DD HH:mm:ss.SSS" },
       { "command": "common-tools.time.now-timestamp", "title": "Time: Get Current Timestamp" },
-      { "command": "common-tools.time.format.local-date", "title": "Time: LocalDate (YYYY-MM-DD)" },
-      { "command": "common-tools.time.format.local-datetime", "title": "Time: LocalDateTime (YYYY-MM-DD HH:mm:ss)" },
+      { "command": "common-tools.time.format.local-date", "title": "Time:  YYYY-MM-DD" },
+      { "command": "common-tools.time.format.local-datetime", "title": "Time: YYYY-MM-DD HH:mm:ss" },
       { "command": "common-tools.time.parse-to-timestamp", "title": "Time: Parse to timestamp" },
       { "command": "common-tools.json.format", "title": "JSON: Format" },
       { "command": "common-tools.json.minify", "title": "JSON: Minify" },
@@ -57,7 +58,8 @@
       { "id": "common-tools.menu.json", "label": "JSON" },
       { "id": "common-tools.menu.string", "label": "String" },
       { "id": "common-tools.menu.time", "label": "Time" },
-      { "id": "common-tools.menu.uuid", "label": "UUID" }
+      { "id": "common-tools.menu.uuid", "label": "UUID" },
+      { "id": "common-tools.menu.random", "label": "Random" }
     ],
     "menus": {
       "editor/context": [
@@ -67,7 +69,8 @@
         { "submenu": "common-tools.menu.json", "group": "1" },
         { "submenu": "common-tools.menu.string", "group": "2" },
         { "submenu": "common-tools.menu.time", "group": "3" },
-        { "submenu": "common-tools.menu.uuid", "group": "4" }
+        { "submenu": "common-tools.menu.uuid", "group": "4" },
+        { "submenu": "common-tools.menu.random", "group": "5" }
       ],
       "common-tools.menu.string": [
         { "command": "common-tools.string.lower-case", "group": "1_basic" },
@@ -96,6 +99,9 @@
         { "command": "common-tools.time.format.local-datetime-ms", "group": "2" },
         { "command": "common-tools.time.format.local-date", "group": "2" },
         { "command": "common-tools.time.now-timestamp", "group": "3" }
+      ],
+      "common-tools.menu.random": [
+        { "command": "common-tools.random.generate", "group": "1" }
       ],
       "common-tools.menu.uuid": [
         { "command": "common-tools.uuid.generate", "group": "1" },
