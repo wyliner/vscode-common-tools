@@ -73,7 +73,7 @@ const jsonCases: JsonCase[] = [
         title: 'Unescaped and formatted successfully',
         handler: (text: string) => {
             const unescaped = JSON.parse('"' + preprocess(text).replace(/"/g, '\"') + '"');
-            return JSON.stringify(unescaped, null, 4);
+            return JSON.stringify(unescaped, null, 2);
         }
     },
     {
@@ -82,7 +82,7 @@ const jsonCases: JsonCase[] = [
         handler: (text: string) => {
             const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
-            return JSON.stringify(unescaped, null, 4);
+            return JSON.stringify(unescaped, null, 2);
         }
     },
     {
@@ -91,7 +91,7 @@ const jsonCases: JsonCase[] = [
         handler: (text: string) => {
             const obj = JSON.parse(preprocess(text));
             const unescaped = deepUnescape(obj);
-            return JSON.stringify(unescaped, null, 4);
+            return JSON.stringify(unescaped, null, 2);
         }
     }
 ];
