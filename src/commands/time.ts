@@ -1,5 +1,6 @@
 
 import * as vscode from 'vscode';
+import { recordCommandExecution } from './last';
 
 function pad(n: number) {
     return n.toString().padStart(2, '0');
@@ -99,82 +100,112 @@ function parseToTimestamp(text: string): string {
     return '';
 }
 
-export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
-    const commands = [
-        {
-            command: 'common-tools.time.now-timestamp',
-            title: 'Current timestamp inserted',
-            handler: () => Date.now().toString()
-        },
-        {
-            command: 'common-tools.time.format.local-date',
-            title: 'Local date inserted (YYYY-MM-DD)',
-            handler: (text?: string) => {
-                if (text === undefined || text === null || text.trim() === '') {
-                    return '';
-                }
-                return formatLocalDate(text.trim());
-            }
-        },
-        {
-            command: 'common-tools.time.format.local-datetime',
-            title: 'Local date time inserted (YYYY-MM-DD HH:mm:ss)',
-            handler: (text?: string) => {
-                if (text === undefined || text === null || text.trim() === '') {
-                    return '';
-                }
-                return formatLocalDateTime(text.trim());
-            }
-        },
-        {
-            command: 'common-tools.time.format.local-datetime-ms',
-            title: 'Local date time with milliseconds inserted (YYYY-MM-DD HH:mm:ss.SSS)',
-            handler: (text?: string) => {
-                if (text === undefined || text === null || text.trim() === '') {
-                    return '';
-                }
-                return formatLocalDateTimeMs(text.trim());
-            }
-        },
-        {
-            command: 'common-tools.time.parse-to-timestamp',
-            title: 'Parsed to timestamp',
-            handler: (text?: string) => parseToTimestamp(text || '')
-        }
-    ];
+// 获取当前时间戳
+function getNowTimestamp(_text?: string): string {
+    return Date.now().toString();
+}
 
-    for (const c of commands) {
+// 转换为日期格式 YYYY-MM-DD
+function toLocalDate(text?: string): string {
+    if (!text || text.trim() === '') {
+        return formatLocalDate(new Date());
+    }
+    return formatLocalDate(text.trim());
+}
+
+// 转换为日期时间格式 YYYY-MM-DD HH:mm:ss
+function toLocalDateTime(text?: string): string {
+    if (!text || text.trim() === '') {
+        return formatLocalDateTime(new Date());
+    }
+    return formatLocalDateTime(text.trim());
+}
+
+// 转换为日期时间(毫秒)格式 YYYY-MM-DD HH:mm:ss.SSS
+function toLocalDateTimeMs(text?: string): string {
+    if (!text || text.trim() === '') {
+        return formatLocalDateTimeMs(new Date());
+    }
+    return formatLocalDateTimeMs(text.trim());
+}
+
+// 字符串转时间戳
+function toTimestamp(text?: string): string {
+    if (!text || text.trim() === '') {
+        return '';
+    }
+    return parseToTimestamp(text.trim());
+}
+
+export function registerTimeToolsCommands(context: vscode.ExtensionContext) {
+    // 定义所有命令，参考string.ts的结构
+    const commands = [
+        { command: 'common-tools.time.now-timestamp', fn: getNowTimestamp, title: 'Time: Current timestamp', insertAtCursor: true },
+        { command: 'common-tools.time.format.local-date', fn: toLocalDate, title: 'Time: Formatted YYYY-MM-DD' },
+        { command: 'common-tools.time.format.local-datetime', fn: toLocalDateTime, title: 'Time: Formatted YYYY-MM-DD HH:mm:ss' },
+        { command: 'common-tools.time.format.local-datetime-ms', fn: toLocalDateTimeMs, title: 'Time: Formatted YYYY-MM-DD HH:mm:ss.SSS' },
+        { command: 'common-tools.time.parse-to-timestamp', fn: toTimestamp, title: 'Time: Parsed to timestamp' }
+    ];
+    
+    // 注册所有命令
+    for (const cmd of commands) {
         context.subscriptions.push(
-            vscode.commands.registerCommand(c.command, async () => {
+            vscode.commands.registerCommand(cmd.command, async () => {
+                // 记录命令执行
+                recordCommandExecution(cmd.command, cmd.title);
+                
                 const editor = vscode.window.activeTextEditor;
-                let text = '';
-                if (editor) {
-                    text = editor.document.getText(editor.selection) || '';
-                }
-                let result = '';
-                try {
-                    result = c.handler(text.trim());
-                } catch (e) {
-                    vscode.window.showErrorMessage('Error: ' + e);
-                    return;
-                }
+                
+                // 如果没有编辑器打开
                 if (!editor) {
-                    vscode.env.clipboard.writeText(result);
-                    vscode.window.showInformationMessage('Copied to clipboard: ' + result);
+                    const result = cmd.fn();
+                    if (result) {
+                        vscode.env.clipboard.writeText(result);
+                        vscode.window.showInformationMessage(`Copied to clipboard: ${result}`);
+                    } else {
+                        vscode.window.showInformationMessage('No result to copy');
+                    }
                     return;
                 }
+                
+                // 获取选中的文本或整个文档
+                const text = editor.document.getText(editor.selection) || '';
+                let result;
+                
+                try {
+                    // 执行处理函数
+                    result = cmd.fn(text);
+                } catch (e) {
+                    vscode.window.showErrorMessage(`Error: ${e instanceof Error ? e.message : String(e)}`);
+                    return;
+                }
+                
+                // 处理结果
                 await editor.edit(editBuilder => {
-                    if (editor.selection.isEmpty) {
-                        const fullRange = new vscode.Range(
-                            editor.document.positionAt(0),
-                            editor.document.positionAt(editor.document.getText().length)
-                        );
-                        editBuilder.replace(fullRange, result);
+                    if (cmd.insertAtCursor) {
+                        // 使用光标插入模式
+                        const position = editor.selection.active || 
+                            new vscode.Position(
+                                editor.document.lineCount - 1, 
+                                editor.document.lineAt(editor.document.lineCount - 1).text.length
+                            );
+                        
+                        editBuilder.insert(position, result);
                     } else {
-                        editBuilder.replace(editor.selection, result);
+                        // 替换模式
+                        if (editor.selection.isEmpty) {
+                            const fullRange = new vscode.Range(
+                                editor.document.positionAt(0),
+                                editor.document.positionAt(editor.document.getText().length)
+                            );
+                            editBuilder.replace(fullRange, result);
+                        } else {
+                            editBuilder.replace(editor.selection, result);
+                        }
                     }
                 });
-                vscode.window.showInformationMessage(c.title);
+                
+                vscode.window.showInformationMessage(cmd.title);
             })
         );
     }

@@ -6,10 +6,13 @@ import { registerTimeToolsCommands } from './commands/time';
 import { registerStringToolsCommands } from './commands/string';
 import { registerUuidCommands } from './commands/uuid';
 import { registerRandomToolsCommands } from './commands/random';
+import { registerLastCommand } from './commands/last';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	// 注册 "上一次命令" 功能
+	registerLastCommand(context);
 	// 注册 JSON 相关命令
 	registerJsonToolsCommands(context);
 	// 注册时间工具相关命令

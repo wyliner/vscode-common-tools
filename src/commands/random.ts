@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { CommonCommand, CommandOperationMode, InsertStrategy } from '../types/command';
+import { CommandExecutor } from '../utils/commandExecutor';
 
 /**
  * 字符集定义
@@ -119,39 +121,51 @@ async function getRandomOptions(): Promise<RandomOptions | undefined> {
 }
 
 /**
+ * 生成随机字符串的处理函数
+ */
+async function randomStringGenerator(): Promise<string> {
+    // 获取用户自定义选项
+    const options = await getRandomOptions();
+    if (!options) {
+        throw new Error('User cancelled operation');
+    }
+    
+    // 生成并返回随机字符串
+    return generateRandomString(options);
+}
+
+/**
+ * 随机字符串命令定义
+ */
+const randomCommands: CommonCommand[] = [
+    {
+        command: 'common-tools.random.generate',
+        title: 'Random: Generate Random String',
+        message: 'Random string generated successfully',
+        fn: randomStringGenerator,
+        operationMode: CommandOperationMode.GENERATE,
+        insertStrategy: InsertStrategy.INSERT
+    }
+];
+
+/**
  * 注册随机数工具命令
  */
 export function registerRandomToolsCommands(context: vscode.ExtensionContext) {
-    context.subscriptions.push(
-        vscode.commands.registerCommand('common-tools.random.generate', async () => {
-            const editor = vscode.window.activeTextEditor;
-            
-            // 获取用户自定义选项
-            const options = await getRandomOptions();
-            if (!options) {
-                return; // 用户取消操作
-            }
-            
-            // 生成随机字符串
-            const randomString = generateRandomString(options);
-
-            // 如果没有编辑器打开，显示消息并返回
-            if (!editor) {
-                vscode.window.showInformationMessage(`Random string generated: ${randomString}`);
-                return;
-            }
-
-            // 获取插入位置：光标位置或文档末尾
-            const position = editor.selection.active || 
-                             new vscode.Position(editor.document.lineCount - 1, 
-                                               editor.document.lineAt(editor.document.lineCount - 1).text.length);
-            
-            // 插入随机字符串到指定位置
-            await editor.edit(editBuilder => {
-                editBuilder.insert(position, randomString);
-            });
-            
-            vscode.window.showInformationMessage(`Random string inserted: ${randomString}`);
-        })
-    );
+    for (const command of randomCommands) {
+        context.subscriptions.push(
+            vscode.commands.registerCommand(command.command, async () => {
+                try {
+                    // 使用通用命令执行器执行命令
+                    await CommandExecutor.execute(command);
+                } catch (error) {
+                    // 捕获错误（如用户取消），不显示错误消息
+                    if (error instanceof Error && error.message === 'User cancelled operation') {
+                        return;
+                    }
+                    vscode.window.showErrorMessage(`Error: ${error instanceof Error ? error.message : String(error)}`);
+                }
+            })
+        );
+    }
 }
