@@ -1,0 +1,146 @@
+{
+  "name": "common-tools",
+  "displayName": "Common Tools",
+  "description": "Common Tools for VS Code",
+  "keywords": [
+    "vscode",
+    "tools",
+    "string",
+    "json",
+    "time",
+    "uuid",
+    "base64"
+  ],
+  "icon": "icon/icon.png",
+  "version": "0.0.11",
+  "publisher": "YonglinWang",
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wyliner/vscode-common-tools"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "common-tools.execute-last-command", "title": "↻ Repeat Last Command" },
+      { "command": "common-tools.random.generate", "title": "Random: Generate Random String" },
+      { "command": "common-tools.uuid.generate", "title": "UUID: Generate UUID v4" },
+      { "command": "common-tools.uuid.generate-without-hyphens", "title": "UUID: Generate UUID v4 without Hyphens" },
+      { "command": "common-tools.time.format.local-datetime-ms", "title": "Time: Format YYYY-MM-DD HH:mm:ss.SSS" },
+      { "command": "common-tools.time.now-timestamp", "title": "Time: Get Current Timestamp" },
+      { "command": "common-tools.time.format.local-date", "title": "Time: Format to YYYY-MM-DD" },
+      { "command": "common-tools.time.format.local-datetime", "title": "Time: Format to YYYY-MM-DD HH:mm:ss" },
+      { "command": "common-tools.time.parse-to-timestamp", "title": "Time: Parse to timestamp" },
+      { "command": "common-tools.time.timezone-offset", "title": "Time: Apply Timezone Offset" },
+      { "command": "common-tools.time.utc-to-local", "title": "Time: UTC to Local Time" },
+      { "command": "common-tools.time.local-to-utc", "title": "Time: Local to UTC Time" },
+      { "command": "common-tools.json.format", "title": "JSON: Format" },
+      { "command": "common-tools.json.deep-format", "title": "JSON: Deep Format" },
+      { "command": "common-tools.json.compress", "title": "JSON: Compress" },
+      { "command": "common-tools.json.compress-one-line", "title": "JSON: Format and Compress" },
+      { "command": "common-tools.string.lower-case", "title": "String: lower case" },
+      { "command": "common-tools.string.upper-case", "title": "String: UPPER CASE" },
+      { "command": "common-tools.string.camel-case", "title": "String: camelCase" },
+      { "command": "common-tools.string.snake-case", "title": "String: snake_case" },
+      { "command": "common-tools.string.screaming-snake-case", "title": "String: SCREAMING_SNAKE_CASE" },
+      { "command": "common-tools.string.kebab-case", "title": "String: kebab-case" },
+      { "command": "common-tools.string.pascal-case", "title": "String: PascalCase" },
+      { "command": "common-tools.string.capitalized-snake-case", "title": "String: Capitalized_Snake_Case" },
+      { "command": "common-tools.string.space-separated", "title": "String: space separated" },
+      { "command": "common-tools.string.dot-case", "title": "String: dot.case" },
+      { "command": "common-tools.base64.encode", "title": "Base64: Encode" },
+      { "command": "common-tools.base64.decode", "title": "Base64: Decode" },
+      { "command": "common-tools.base64.encode-url-safe", "title": "Base64: Encode URL Safe" },
+      { "command": "common-tools.base64.decode-url-safe", "title": "Base64: Decode URL Safe" }
+    ],
+    "submenus": [
+      { "id": "common-tools.menu", "label": "Common Tools" },
+      { "id": "common-tools.menu.json", "label": "JSON" },
+      { "id": "common-tools.menu.string", "label": "String" },
+      { "id": "common-tools.menu.time", "label": "Time" },
+      { "id": "common-tools.menu.uuid", "label": "UUID" },
+      { "id": "common-tools.menu.random", "label": "Random" },
+      { "id": "common-tools.menu.base64", "label": "Base64" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "submenu": "common-tools.menu", "group": "navigation@100" }
+      ],
+      "common-tools.menu": [
+        { "command": "common-tools.execute-last-command", "group": "0" },
+        { "submenu": "common-tools.menu.json", "group": "1" },
+        { "submenu": "common-tools.menu.string", "group": "2" },
+        { "submenu": "common-tools.menu.time", "group": "3" },
+        { "submenu": "common-tools.menu.uuid", "group": "4" },
+        { "submenu": "common-tools.menu.random", "group": "5" },
+        { "submenu": "common-tools.menu.base64", "group": "6" }
+      ],
+      "common-tools.menu.string": [
+        { "command": "common-tools.string.lower-case", "group": "1_basic" },
+        { "command": "common-tools.string.upper-case", "group": "1_basic" },
+        { "command": "common-tools.string.camel-case", "group": "2_case" },
+        { "command": "common-tools.string.pascal-case", "group": "2_case" },
+        { "command": "common-tools.string.snake-case", "group": "2_case" },
+        { "command": "common-tools.string.screaming-snake-case", "group": "2_case" },
+        { "command": "common-tools.string.kebab-case", "group": "2_case" },
+        { "command": "common-tools.string.dot-case", "group": "2_case" },
+        { "command": "common-tools.string.capitalized-snake-case", "group": "3_special" },
+        { "command": "common-tools.string.space-separated", "group": "3_special" }
+      ],
+      "common-tools.menu.json": [
+        { "command": "common-tools.json.format", "group": "1" },
+        { "command": "common-tools.json.deep-format", "group": "1" },
+        { "command": "common-tools.json.compress", "group": "1" },
+        { "command": "common-tools.json.compress-one-line", "group": "1" }
+      ],
+      "common-tools.menu.time": [
+        { "command": "common-tools.time.parse-to-timestamp", "group": "1" },
+        { "command": "common-tools.time.now-timestamp", "group": "1" },
+        { "command": "common-tools.time.format.local-datetime", "group": "2" },
+        { "command": "common-tools.time.format.local-datetime-ms", "group": "2" },
+        { "command": "common-tools.time.format.local-date", "group": "2" },
+        { "command": "common-tools.time.utc-to-local", "group": "4" },
+        { "command": "common-tools.time.local-to-utc", "group": "4" },
+        { "command": "common-tools.time.timezone-offset", "group": "5" }
+      ],
+      "common-tools.menu.random": [
+        { "command": "common-tools.random.generate", "group": "1" }
+      ],
+      "common-tools.menu.uuid": [
+        { "command": "common-tools.uuid.generate", "group": "1" },
+        { "command": "common-tools.uuid.generate-without-hyphens", "group": "1" }
+      ],
+      "common-tools.menu.base64": [
+        { "command": "common-tools.base64.encode", "group": "1" },
+        { "command": "common-tools.base64.decode", "group": "1" },
+        { "command": "common-tools.base64.encode-url-safe", "group": "2" },
+        { "command": "common-tools.base64.decode-url-safe", "group": "2" }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.101.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
